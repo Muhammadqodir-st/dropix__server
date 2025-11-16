@@ -1,0 +1,7 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('DEVELOPER', 'PHOTOGRAPHER', 'DESIGNER', 'BLOGGER', 'EDITOR', 'CONTENTMAKER', 'MARKETER', 'MANAGER');
+
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "avatar" TEXT NOT NULL DEFAULT 'https://i.postimg.cc/nhw9bdGX/5abd985735a8fd4adcb0e795de6a1005.jpg',
+ADD COLUMN     "bio" TEXT,
+ADD COLUMN     "role" "Role" NOT NULL DEFAULT 'CONTENTMAKER';

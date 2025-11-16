@@ -80,50 +80,52 @@ export class AuthService {
 
     // verify user
     async verifyUser(token: string) {
-        const data = this.jwt.verify(token, { secret: process.env.JWT_SECRET });
+        try {
+            const data = this.jwt.verify(token, { secret: process.env.JWT_SECRET });
 
-        if (!data) {
-            throw new HttpException('Invalid token', 400)
-        };
-
-
-        // register
-        if (data.method === "register") {
-            const existEmail = await this.prisma.user.findUnique({
-                where: { email: data.email }
-            });
-
-            if (existEmail) {
-                throw new HttpException('User already exists, please login instead', 400)
+            if (!data) {
+                throw new HttpException('Invalid token', 400)
             };
 
-            const newUser = await this.prisma.user.create({
-                data: {
-                    name: data.name,
-                    email: data.email
+
+            // register
+            if (data.method === "register") {
+                const existEmail = await this.prisma.user.findUnique({
+                    where: { email: data.email }
+                });
+
+                if (existEmail) {
+                    throw new HttpException('User already exists, please login instead', 400)
+                };
+
+                const newUser = await this.prisma.user.create({
+                    data: {
+                        name: data.name,
+                        email: data.email
+                    }
+                });
+
+                if (!newUser) {
+                    throw new HttpException('User registration failed', 500)
                 }
-            });
 
-            if (!newUser) {
-                throw new HttpException('User registration failed', 500)
+                return { token: this.generateToken(newUser.id, newUser.email), success: true, message: "Creating account..." }
             }
 
-            return { token: this.generateToken(newUser.id, newUser.email), succes: true, message: "Creating account..." }
-        }
+            if (data.method === "login") {
+                const user = await this.prisma.user.findUnique({
+                    where: { email: data.email }
+                });
 
-        if (data.method === "login") {
-            const user = await this.prisma.user.findUnique({
-                where: { email: data.email }
-            });
+                if (!user) {
+                    throw new HttpException("User not found", 404);
+                }
 
-            if (!user) {
-                throw new HttpException("User not found", 404);
+                return { token: this.generateToken(user.id, user.email), success: true, message: "Logging in, please wait..." }
             }
-
-            return { token: this.generateToken(user.id, user.email), success: true, message: "Logging in, please wait..." }
+        } catch (error) {
+            throw new HttpException("Invalid token", 400)
         }
-
-        throw new HttpException("Invalid token", 400)
     };
 
 
