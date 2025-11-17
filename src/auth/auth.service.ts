@@ -124,7 +124,7 @@ export class AuthService {
                 return { token: this.generateToken(user.id, user.email), success: true, message: "Logging in, please wait..." }
             }
         } catch (error) {
-            throw new HttpException("Invalid token", 400)
+            throw new HttpException("Invalid token", 400);
         }
     };
 
