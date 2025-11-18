@@ -19,18 +19,18 @@ model User {
   email     String   @unique
   avatar    String   @default("https://i.postimg.cc/nhw9bdGX/5abd985735a8fd4adcb0e795de6a1005.jpg")
   bio       String?
-  role      Role     @default(BLOGGER)
+  role      Role     @default(DEVELOPER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum Role {
-  DEVELOPER    @map("Developer")
-  PHOTOGRAPHER @map("Photographer")
-  DESIGNER     @map("Designer")
-  BLOGGER      @map("Blogger")
-  EDITOR       @map("Editor")
-  CONTENTMAKER @map("ContentMaker")
-  MARKETER     @map("Marketer")
-  MANAGER      @map("Manager")
+  DEVELOPER
+  PHOTOGRAPHER
+  DESIGNER
+  BLOGGER
+  EDITOR
+  CONTENTMAKER
+  MARKETER
+  MANAGER
 }
