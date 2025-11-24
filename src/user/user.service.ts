@@ -18,7 +18,12 @@ export class UserService {
     async findOne(id: string) {
         try {
             const user = await this.prisma.user.findUnique({
-                where: { id: id }
+                where: { id: id },
+                include: {
+                    followers: {
+                        include: { follower: true }
+                    }, following: true
+                }
             });
 
             if (!user) {
