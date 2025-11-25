@@ -20,20 +20,4 @@ model User {
   bio       String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // follow
-  following Follow[] @relation("following")
-  followers Follow[] @relation("followers")
-}
-
-model Follow {
-  id String @id @default(uuid())
-
-  // following
-  followingId String
-  following   User   @relation("following", fields: [followingId], references: [id])
-
-  // followers
-  followerId String
-  follower   User   @relation("followers", fields: [followerId], references: [id])
 }

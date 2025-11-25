@@ -133,13 +133,6 @@ export class AuthService {
     async getUser(req: GetUser) {
         const user = await this.prisma.user.findUnique({
             where: { email: req.user.email },
-            include: {
-                followers: {
-                    include: { follower: true }
-                }, following: {
-                    include: { following: true }
-                }
-            }
         });
 
         if (!user) {
