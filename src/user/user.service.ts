@@ -1,4 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { GetUser } from 'src/interfaces/getUser.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -29,6 +30,10 @@ export class UserService {
         } catch (error) {
             throw new HttpException('User not found', 404)
         }
+    }
+
+    async updateOne(name: string, email: string, bio: string, file: Express.Multer.File, req: GetUser) {
+
     }
 
     async deleteOne(id: string) {
