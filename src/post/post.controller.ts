@@ -1,23 +1,35 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PostService } from './post.service';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import type { Req__with__user } from 'src/interfaces/getUser.interface';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('post')
 export class PostController {
     constructor(private readonly postService: PostService) { }
 
+    @UseGuards(AuthGuard)
     @Get()
     findAll() {
-        return
+        return this.postService.findAll()
     }
 
+    @UseGuards(AuthGuard)
     @Get(":id")
-    findId() {
-        return
+    findId(@Param('id') id: string) {
+        return this.postService.findById(id)
     }
 
+    @UseGuards(AuthGuard)
     @Post("create")
-    createPost() {
-        return
+    @UseInterceptors(FileInterceptor('file'))
+    createPost(
+        @UploadedFile() file: Express.Multer.File,
+        @Req() req: Req__with__user,
+        @Body() dto: CreatePostDto
+    ) {
+        return this.postService.createPost(file, req.user.id, dto)
     }
 
     @Patch(":id")

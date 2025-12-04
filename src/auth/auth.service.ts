@@ -4,7 +4,7 @@ import { LoginDto } from './dto/login.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { MailerService } from 'src/mailer/mailer.service';
-import { GetUser } from 'src/interfaces/getUser.interface';
+import { Req__with__user } from 'src/interfaces/getUser.interface';
 
 @Injectable()
 export class AuthService {
@@ -130,7 +130,7 @@ export class AuthService {
 
 
     // get user
-    async getUser(req: GetUser) {
+    async getUser(req: Req__with__user) {
         const user = await this.prisma.user.findUnique({
             where: { email: req.user.email },
         });

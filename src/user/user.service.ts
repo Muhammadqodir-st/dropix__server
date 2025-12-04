@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { GetUser } from 'src/interfaces/getUser.interface';
+import { Req__with__user } from 'src/interfaces/getUser.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class UserService {
         }
     }
 
-    async updateOne(name: string, email: string, bio: string, file: Express.Multer.File, req: GetUser) {
+    async updateOne(name: string, email: string, bio: string, file: Express.Multer.File, req: Req__with__user) {
 
     }
 

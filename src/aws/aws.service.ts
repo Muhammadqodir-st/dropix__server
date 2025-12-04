@@ -61,7 +61,53 @@ export class AwsService {
             await this.s3.send(command)
             this.logger.log(`Successfully uploaded ${fileName}.`)
 
-            return `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`
+            const url = `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`
+            return url
+        } catch (error) {
+            this.logger.error(`Failed to upload file to S3: ${error.message}`, error.stack);
+            throw new HttpException('An error occurred while uploading the file.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    async upload__post__image(file: Express.Multer.File) {
+        if (!file) {
+            throw new HttpException('No file provided', HttpStatus.BAD_REQUEST)
+        }
+
+        if (file.mimetype === "image/svg+xml") {
+            this.logger.log(`Blocked attempt to upload SVG file: ${file.originalname}`)
+            throw new HttpException('SVG files are not allowed for security reasons.', HttpStatus.BAD_REQUEST)
+        }
+
+        const fileName = `${uuid}.webp`;
+        const bucket = this.config.get("AWS_S3_BUCKET_NAME");
+        const region = this.config.get("AWS_REGION");
+
+        if (!bucket) {
+            this.logger.log("AWS_S3_BUCKET_NAME is not configured.")
+            throw new HttpException("File upload configuration is incomplete.", HttpStatus.INTERNAL_SERVER_ERROR)
+        };
+
+        this.logger.log(`Processing file: ${file.originalname} -> ${fileName}`);
+
+        try {
+            const optimizedBuffer = await sharp(file.buffer)
+                .resize({ width: 500, height: 500, fit: "cover" })
+                .toFormat('webp', { quality: 60 })
+                .toBuffer();
+
+            const command = new PutObjectCommand({
+                Bucket: bucket,
+                Key: fileName,
+                Body: optimizedBuffer,
+                ContentType: 'image/webp'
+            });
+
+            this.logger.log(`Uploading post image ${fileName} to bucket ${bucket}...`)
+            await this.s3.send(command)
+            this.logger.log(`Successfully uploaded ${fileName}.`)
+
+            return `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`;
         } catch (error) {
             this.logger.error(`Failed to upload file to S3: ${error.message}`, error.stack);
             throw new HttpException('An error occurred while uploading the file.', HttpStatus.INTERNAL_SERVER_ERROR);

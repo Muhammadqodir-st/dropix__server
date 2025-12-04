@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/comm
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import type { GetUser } from 'src/interfaces/getUser.interface';
+import type { Req__with__user } from 'src/interfaces/getUser.interface';
 import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('auth')
@@ -26,7 +26,7 @@ export class AuthController {
 
     @UseGuards(AuthGuard)
     @Get('profile')
-    getUser(@Req() req: GetUser) {
+    getUser(@Req() req: Req__with__user) {
         return this.authService.getUser(req)
     }
 }

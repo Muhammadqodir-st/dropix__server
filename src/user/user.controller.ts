@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, U
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import type { GetUser } from 'src/interfaces/getUser.interface';
+import type { Req__with__user } from 'src/interfaces/getUser.interface';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +25,7 @@ export class UserController {
     @UseInterceptors(FileInterceptor('file'))
     updateOne(
         @UploadedFile() file: Express.Multer.File,
-        @Req() req: GetUser,
+        @Req() req: Req__with__user,
         @Body('name') name: string,
         @Body('email') email: string,
         @Body('bio') bio: string
