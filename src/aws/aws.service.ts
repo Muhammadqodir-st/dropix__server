@@ -33,7 +33,7 @@ export class AwsService {
             throw new HttpException('SVG files are not allowed for security reasons.', HttpStatus.BAD_REQUEST)
         }
 
-        const fileName = `${uuid}.webp`;
+        const fileName = `${uuid()}.webp`;
         const bucket = this.config.get("AWS_S3_BUCKET_NAME");
         const region = this.config.get("AWS_REGION");
 
@@ -79,7 +79,7 @@ export class AwsService {
             throw new HttpException('SVG files are not allowed for security reasons.', HttpStatus.BAD_REQUEST)
         }
 
-        const fileName = `${uuid}.webp`;
+        const fileName = `${uuid()}.webp`;
         const bucket = this.config.get("AWS_S3_BUCKET_NAME");
         const region = this.config.get("AWS_REGION");
 
@@ -107,7 +107,9 @@ export class AwsService {
             await this.s3.send(command)
             this.logger.log(`Successfully uploaded ${fileName}.`)
 
-            return `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`;
+            const url = `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`
+
+            return url
         } catch (error) {
             this.logger.error(`Failed to upload file to S3: ${error.message}`, error.stack);
             throw new HttpException('An error occurred while uploading the file.', HttpStatus.INTERNAL_SERVER_ERROR);

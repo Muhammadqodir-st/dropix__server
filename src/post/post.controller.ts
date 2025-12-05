@@ -32,18 +32,21 @@ export class PostController {
         return this.postService.createPost(file, req.user.id, dto)
     }
 
+    @UseGuards(AuthGuard)
     @Patch(":id")
     updateById() {
         return
     }
 
+    @UseGuards(AuthGuard)
     @Delete(":id")
-    deleteById() {
-        return
+    deleteById(@Param("id") id: string, @Req() req: Req__with__user) {
+        return this.postService.deleteById(id, req.user.id)
     }
 
+    @UseGuards(AuthGuard)
     @Delete('delete')
     deleteAll() {
-        return
+        return this.postService.deleteAll()
     }
 }

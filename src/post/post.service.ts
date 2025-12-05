@@ -13,7 +13,9 @@ export class PostService {
 
     async findAll() {
         try {
-            return await this.prisma.post.findMany()
+            return await this.prisma.post.findMany({
+                include: { auther: true }
+            })
         } catch (error) {
             throw new InternalServerErrorException(error.message)
         }
@@ -22,7 +24,8 @@ export class PostService {
     async findById(id: string) {
         try {
             const post = await this.prisma.post.findUnique({
-                where: { id }
+                where: { id },
+                include: { auther: true }
             });
 
             if (!post) {
@@ -55,7 +58,42 @@ export class PostService {
                 }
             });
 
-            return { post, success: true }
+            return { post, message: "Post created", success: true }
+        } catch (error) {
+            throw new InternalServerErrorException(error.message)
+        }
+    }
+
+    async update_post() { }
+
+    async deleteById(id: string, userId) {
+        const post = await this.prisma.post.findUnique({
+            where: { id }
+        });
+
+        if (!post) {
+            throw new HttpException("Post not found!", 404)
+        }
+
+        if (post.autherId !== userId) {
+            throw new HttpException("You are not creator of this post", 400)
+        }
+
+        try {
+            const deleted__post = await this.prisma.post.delete({
+                where: { id: post.id }
+            });
+
+            return { message: "Deleted post", success: true }
+        } catch (error) {
+            throw new InternalServerErrorException(error.message)
+        }
+    }
+
+    async deleteAll() {
+        try {
+            await this.prisma.post.deleteMany({})
+            return "Deleted successfully"
         } catch (error) {
             throw new InternalServerErrorException(error.message)
         }
