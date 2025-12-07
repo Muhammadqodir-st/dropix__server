@@ -13,22 +13,49 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  email     String   @unique
-  avatar    String   @default("https://i.postimg.cc/nhw9bdGX/5abd985735a8fd4adcb0e795de6a1005.jpg")
+  email     String    @unique
+  avatar    String    @default("https://i.postimg.cc/nhw9bdGX/5abd985735a8fd4adcb0e795de6a1005.jpg")
   bio       String?
   posts     Post[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  likes     Like[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   title     String?
   image     String
   autherId  String
-  auther    User     @relation(fields: [autherId], references: [id])
+  auther    User      @relation(fields: [autherId], references: [id])
+  likes     Like[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Like {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@unique([userId, postId])
+}
+
+model Comment {
+  id     String @id @default(uuid())
+  text   String
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+
+  createdAt DateTime @default(now())
 }
