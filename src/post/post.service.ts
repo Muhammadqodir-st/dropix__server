@@ -1,6 +1,5 @@
 import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AwsService } from 'src/aws/aws.service';
-import { Req__with__user } from 'src/interfaces/getUser.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 
@@ -45,6 +44,10 @@ export class PostService {
 
         if (!user) {
             throw new HttpException("User not found!", 404)
+        }
+
+        if (!file) {
+            throw new HttpException("File not provided", 400)
         }
 
         const image = await this.aws.upload__post__image(file)

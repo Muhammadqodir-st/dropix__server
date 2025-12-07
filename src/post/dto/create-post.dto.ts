@@ -1,9 +1,7 @@
-import { IsNotEmpty, IsString, Max } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength } from "class-validator";
 
 export class CreatePostDto {
-    @IsNotEmpty()
     @IsString()
-    @Max(200)
+    @MaxLength(200)
     title: string;
-
 }
