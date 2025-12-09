@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PostController } from './post.controller';
 import { PostService } from './post.service';
-import { AwsModule } from 'src/aws/aws.module';
+import { AwsModule } from 'src/common/aws/aws.module';
 
 @Module({
   imports: [AwsModule],

@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Req__with__user } from 'src/interfaces/getUser.interface';
 

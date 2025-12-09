@@ -1,5 +1,5 @@
 import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AwsService } from 'src/aws/aws.service';
+import { AwsService } from 'src/common/aws/aws.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 
@@ -13,7 +13,7 @@ export class PostService {
     async findAll() {
         try {
             return await this.prisma.post.findMany({
-                include: { auther: true }
+                include: { auther: true, likes: true }
             })
         } catch (error) {
             throw new InternalServerErrorException(error.message)

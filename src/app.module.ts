@@ -5,7 +5,8 @@ import { MailerModule } from './mailer/mailer.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
-import { AwsModule } from './aws/aws.module';
+import { AwsModule } from './common/aws/aws.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AwsModule } from './aws/aws.module';
     UserModule,
     PostModule,
     AwsModule,
+    LikeModule,
   ],
 })
 export class AppModule { }
