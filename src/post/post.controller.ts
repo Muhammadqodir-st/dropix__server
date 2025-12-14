@@ -9,13 +9,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 export class PostController {
     constructor(private readonly postService: PostService) { }
 
-    @UseGuards(AuthGuard)
     @Get()
     findAll() {
         return this.postService.findAll()
     }
 
-    @UseGuards(AuthGuard)
     @Get(":id")
     findId(@Param('id') id: string) {
         return this.postService.findById(id)
@@ -32,7 +30,6 @@ export class PostController {
         return this.postService.createPost(file, req.user.id, dto)
     }
 
-    @UseGuards(AuthGuard)
     @Patch(":id")
     updateById() {
         return
@@ -44,7 +41,6 @@ export class PostController {
         return this.postService.deleteById(id, req.user.id)
     }
 
-    @UseGuards(AuthGuard)
     @Delete('delete')
     deleteAll() {
         return this.postService.deleteAll()

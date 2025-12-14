@@ -8,10 +8,14 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 export class LikeController {
     constructor(private readonly likeService: LikeService) { }
 
-    @UseGuards(AuthGuard)
+    @Get()
+    findAll() {
+        return this.likeService.findAll()
+    }
+
     @Get(":id")
-    findAll(@Param('id') id: string) {
-        return this.likeService.findAll(id)
+    findById(@Param('id') id: string) {
+        return this.likeService.findById(id)
     }
 
     @UseGuards(AuthGuard)

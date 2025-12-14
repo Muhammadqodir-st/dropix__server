@@ -1,11 +1,21 @@
-import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class LikeService {
     constructor(private readonly prisma: PrismaService) { }
 
-    async findAll(postId: string) {
+    async findAll() {
+        try {
+            const like = await this.prisma.like.findMany()
+
+            return { like }
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    async findById(postId: string) {
         try {
             const post = await this.prisma.post.findUnique({
                 where: { id: postId }
@@ -21,7 +31,7 @@ export class LikeService {
 
             return { likes: count }
         } catch (error) {
-
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 

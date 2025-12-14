@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './post/post.module';
 import { AwsModule } from './common/aws/aws.module';
 import { LikeModule } from './like/like.module';
+import { CommentService } from './comment/comment.service';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { LikeModule } from './like/like.module';
     PostModule,
     AwsModule,
     LikeModule,
+    CommentModule,
   ],
+  providers: [CommentService],
 })
 export class AppModule { }
