@@ -27,10 +27,9 @@ export class UserController {
         @UploadedFile() file: Express.Multer.File,
         @Req() req: Req__with__user,
         @Body('name') name: string,
-        @Body('email') email: string,
         @Body('bio') bio: string
     ) {
-        return this.userService.updateOne(name, email, bio, file, req)
+        return this.userService.updateOne(name, bio, file, req)
     }
 
     @UseGuards(AuthGuard)
