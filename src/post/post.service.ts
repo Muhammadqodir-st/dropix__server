@@ -24,12 +24,34 @@ export class PostService {
         try {
             const post = await this.prisma.post.findUnique({
                 where: { id },
-                include: { auther: true }
+                include: { auther: true, likes: true, comments: true }
             });
 
             if (!post) {
                 throw new HttpException("Post not found!", 404)
             };
+
+            // const keywords = post.title
+            //     ?.toLocaleLowerCase()
+            //     .split(' ')
+            //     .filter(w => w.length > 3) || []
+
+            // const releted = await this.prisma.post.findMany({
+            //     where: {
+            //         id: { not: post.id },
+            //         OR: [
+            //             {
+            //                 autherId: post.autherId
+            //             },
+            //             {
+            //                 OR: keywords.map((word) => ({
+            //                     title: word,
+            //                     mode: 'insensitive'
+            //                 })),
+            //             }
+            //         ]
+            //     }
+            // })
 
             return { post }
         } catch (error) {
