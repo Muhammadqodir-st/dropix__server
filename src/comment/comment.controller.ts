@@ -21,7 +21,6 @@ export class CommentController {
     @UseGuards(AuthGuard)
     @Post('create/:id')
     createComment(@Param('id') id: string, @Body() dto: CommentDto, @Req() req: Req__with__user) {
-        console.log(id, dto, req.user.id)
         return this.commentService.createComment(id, dto, req.user.id)
     }
 
