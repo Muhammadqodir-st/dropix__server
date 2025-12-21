@@ -21,6 +21,7 @@ model User {
   posts     Post[]
   likes     Like[]
   comments  Comment[]
+  saves     Save[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -33,6 +34,7 @@ model Post {
   auther    User      @relation(fields: [autherId], references: [id])
   likes     Like[]
   comments  Comment[]
+  saves     Save[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -57,5 +59,14 @@ model Comment {
   postId String
   post   Post   @relation(fields: [postId], references: [id])
 
+  createdAt DateTime @default(now())
+}
+
+model Save {
+  id        String   @id() @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
 }

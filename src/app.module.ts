@@ -9,6 +9,7 @@ import { AwsModule } from './common/aws/aws.module';
 import { LikeModule } from './like/like.module';
 import { CommentService } from './comment/comment.service';
 import { CommentModule } from './comment/comment.module';
+import { SaveModule } from './save/save.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CommentModule } from './comment/comment.module';
     AwsModule,
     LikeModule,
     CommentModule,
+    SaveModule,
   ],
   providers: [CommentService],
 })
