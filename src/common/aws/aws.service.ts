@@ -92,7 +92,7 @@ export class AwsService {
 
         try {
             const optimizedBuffer = await sharp(file.buffer)
-                .resize({ width: 500, fit: "cover" })
+                .resize({ width: 500, height: 360, fit: "cover" })
                 .toFormat('webp', { quality: 60 })
                 .toBuffer();
 
