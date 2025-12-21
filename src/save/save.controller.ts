@@ -20,13 +20,9 @@ export class SaveController {
     }
 
     @UseGuards(AuthGuard)
-    @Post()
+    @Post('create')
     create(@Body() dto: SaveDto, @Req() req: Req__with__user) {
         return this.saveService.create(req.user.id, dto)
     }
 
-    @Delete(':id')
-    delete(@Param('id') id: string) {
-        return this.saveService.delete(id)
-    }
 }

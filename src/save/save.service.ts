@@ -51,28 +51,20 @@ export class SaveService {
                 throw new HttpException("Post not found", 404)
             }
 
-            const saved = await this.prisma.save.create({
-                data: { userId, postId: post.id }
+            const existing = await this.prisma.save.findFirst({
+                where: { userId, postId: data.postId }
             })
 
-            return { success: true }
-        } catch (error) {
-            throw new HttpException('Internal Server error', HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
+            if (existing) {
+                await this.prisma.save.delete({
+                    where: { id: existing.id }
+                })
 
-    async delete(id: string) {
-        try {
-            const save = await this.prisma.save.findUnique({
-                where: { id }
-            })
-
-            if (!save) {
-                throw new HttpException("Saved post not found", 404)
+                return {message:'deleted'}
             }
 
-            const deleted = await this.prisma.save.delete({
-                where: { id }
+            const saved = await this.prisma.save.create({
+                data: { userId, postId: post.id }
             })
 
             return { success: true }
