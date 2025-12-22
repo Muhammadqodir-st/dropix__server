@@ -13,7 +13,7 @@ export class PostService {
     async findAll() {
         try {
             return await this.prisma.post.findMany({
-                include: { auther: true, likes: true }
+                include: { auther: true, likes: true, saves: true }
             })
         } catch (error) {
             throw new InternalServerErrorException(error.message)
