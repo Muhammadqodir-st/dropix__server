@@ -31,7 +31,7 @@ model Post {
   title     String?
   image     String
   autherId  String
-  auther    User      @relation(fields: [autherId], references: [id])
+  auther    User      @relation(fields: [autherId], references: [id], onDelete: Cascade)
   likes     Like[]
   comments  Comment[]
   saves     Save[]
@@ -42,9 +42,9 @@ model Post {
 model Like {
   id     String @id @default(uuid())
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -55,9 +55,9 @@ model Comment {
   id     String @id @default(uuid())
   text   String
   userId String
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
@@ -65,8 +65,8 @@ model Comment {
 model Save {
   id        String   @id() @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
