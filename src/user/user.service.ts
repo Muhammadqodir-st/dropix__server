@@ -27,6 +27,15 @@ export class UserService {
                 include: {
                     posts: {
                         include: { auther: true, likes: true, comments: true, saves: true }
+                    },
+                    saves: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            }
+                        }
                     }
                 }
             });
