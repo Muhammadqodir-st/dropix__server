@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AwsService } from 'src/common/aws/aws.service';
 import { Req__with__user } from 'src/interfaces/getUser.interface';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdateUser } from './dto/update.dto';
 
 @Injectable()
 export class UserService {
@@ -50,7 +51,7 @@ export class UserService {
         }
     }
 
-    async updateOne(name: string, bio: string, file: Express.Multer.File, req: Req__with__user) {
+    async updateOne(data: UpdateUser, file: Express.Multer.File, req: Req__with__user) {
         try {
             const user = await this.prisma.user.findUnique({
                 where: { id: req.user.id }
@@ -60,19 +61,15 @@ export class UserService {
                 throw new HttpException('User not found', 404)
             }
 
-            if (!name) {
-                throw new HttpException('Update user field', 400)
-            }
+            let avatar = user.avatar
 
-            if (!file) {
-                throw new HttpException("File not provided", 400)
+            if (file) {
+                avatar = await this.aws.update__profile__image(file)
             }
-
-            const avatar = await this.aws.update__profile__image(file)
 
             const update = await this.prisma.user.update({
                 where: { id: user.id },
-                data: { name, bio, avatar }
+                data: { name: data.name, bio: data.bio, avatar }
             })
 
             return { success: true, user: update }

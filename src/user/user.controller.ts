@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Req__with__user } from 'src/interfaces/getUser.interface';
+import { UpdateUser } from './dto/update.dto';
 
 @Controller('user')
 export class UserController {
@@ -24,10 +25,9 @@ export class UserController {
     updateOne(
         @UploadedFile() file: Express.Multer.File,
         @Req() req: Req__with__user,
-        @Body('name') name: string,
-        @Body('bio') bio: string
+        @Body() dto: UpdateUser,
     ) {
-        return this.userService.updateOne(name, bio, file, req)
+        return this.userService.updateOne(dto, file, req)
     }
 
     @Delete(':id')
