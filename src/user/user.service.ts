@@ -21,10 +21,10 @@ export class UserService {
         }
     }
 
-    async findOne(id: string) {
+    async getMyProfile(userId: string) {
         try {
             const user = await this.prisma.user.findUnique({
-                where: { id: id },
+                where: { id: userId },
                 include: {
                     posts: {
                         include: { auther: true, likes: true, comments: true, saves: true }
@@ -37,7 +37,37 @@ export class UserService {
                                 }
                             }
                         }
+                    },
+                    likes: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            }
+                        }
                     }
+                }
+            })
+
+            if (!user) {
+                throw new HttpException('User not found', 404)
+            }
+
+            return { user }
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    async findOne(id: string) {
+        try {
+            const user = await this.prisma.user.findUnique({
+                where: { id: id },
+                include: {
+                    posts: {
+                        include: { auther: true, likes: true, comments: true, saves: true }
+                    },
                 }
             });
 

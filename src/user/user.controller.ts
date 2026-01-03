@@ -14,6 +14,12 @@ export class UserController {
         return this.userService.findAll()
     }
 
+    @UseGuards(AuthGuard)
+    @Get('profile')
+    myProfile(@Req() req: Req__with__user) {
+        return this.userService.getMyProfile(req.user.id)
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.userService.findOne(id)
