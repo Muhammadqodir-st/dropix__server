@@ -46,6 +46,16 @@ export class UserService {
                                 }
                             }
                         }
+                    },
+                    comments: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            },
+                            user: true
+                        }
                     }
                 }
             })
