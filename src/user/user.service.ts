@@ -109,7 +109,40 @@ export class UserService {
 
             const update = await this.prisma.user.update({
                 where: { id: user.id },
-                data: { name: data.name, bio: data.bio, avatar }
+                data: { name: data.name, bio: data.bio, avatar },
+                include: {
+                    posts: {
+                        include: { auther: true, likes: true, comments: true, saves: true }
+                    },
+                    saves: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            }
+                        }
+                    },
+                    likes: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            }
+                        }
+                    },
+                    comments: {
+                        include: {
+                            post: {
+                                include: {
+                                    auther: true, likes: true, comments: true, saves: true
+                                }
+                            },
+                            user: true
+                        }
+                    }
+                }
             })
 
             return { success: true, user: update }
