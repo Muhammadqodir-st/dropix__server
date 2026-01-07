@@ -10,8 +10,6 @@ export class MailerService {
     constructor() {
         this.transporter = nodemailer.createTransport({
             service: 'gmail',
-            host: 'smtp.sendgrid.net',
-            port: 587,
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
