@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe())
   app.enableCors({
-    origin: ['https://dropixuz.vercel.app'],
+    origin: ['https://dropixuz.vercel.app', 'http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -14,6 +14,6 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 8000);
 
   console.log(process.env.PORT);
-  
+
 }
 bootstrap();
