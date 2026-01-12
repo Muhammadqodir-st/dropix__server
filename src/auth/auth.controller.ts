@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -20,8 +20,17 @@ export class AuthController {
     }
 
     @Get('verify')
-    verifyUser(@Query("token") token: string) {
-        return this.authService.verifyUser(token)
+    verifyUser(@Query("token") token: string, @Res({ passthrough: true }) res: any) {
+        const result = this.authService.verifyUser(token)
+
+        res.cookie('auth', 'true', {
+            secure: true,
+            sameSite: 'none',
+            path: '/',
+        })
+
+
+        return result
     }
 
     @UseGuards(AuthGuard)
@@ -29,4 +38,12 @@ export class AuthController {
     getUser(@Req() req: Req__with__user) {
         return this.authService.getUser(req)
     }
+
+    @Post('logout')
+    logout(@Res({ passthrough: true }) res: any) {
+        res.clearCookie('auth', { path: '/' })
+
+        return { success: true }
+    }
+
 }
