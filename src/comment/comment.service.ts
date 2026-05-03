@@ -1,5 +1,5 @@
 import { ForbiddenException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CommentDto } from './dto/comment.dto';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class CommentService {
             const comments = await this.prisma.comment.findMany()
 
             return { comment: comments }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -52,7 +52,7 @@ export class CommentService {
             })
 
             return { success: true, comment }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -76,7 +76,7 @@ export class CommentService {
             })
 
             return { success: true }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

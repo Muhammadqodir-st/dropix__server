@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CommentDto } from './dto/comment.dto';
-import type { Req__with__user } from 'src/interfaces/getUser.interface';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import type { Req__with__user } from '../interfaces/getUser.interface';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('comment')
 export class CommentController {

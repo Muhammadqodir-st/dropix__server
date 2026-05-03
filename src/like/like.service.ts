@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class LikeService {
@@ -10,7 +10,7 @@ export class LikeService {
             const like = await this.prisma.like.findMany()
 
             return { like }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -30,7 +30,7 @@ export class LikeService {
             })
 
             return { likes: count }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -70,7 +70,7 @@ export class LikeService {
             })
 
             return { success: true, likes: count }
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }

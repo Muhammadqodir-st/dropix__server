@@ -1,6 +1,6 @@
 import { HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { AwsService } from 'src/common/aws/aws.service';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AwsService } from '../common/aws/aws.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreatePostDto } from './dto/create-post.dto';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class PostService {
             return await this.prisma.post.findMany({
                 include: { auther: true, likes: true, saves: true }
             })
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }
@@ -54,7 +54,7 @@ export class PostService {
             // })
 
             return { post }
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }
@@ -84,7 +84,7 @@ export class PostService {
             });
 
             return { post, message: "Post created", success: true }
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }
@@ -110,7 +110,7 @@ export class PostService {
             });
 
             return { message: "Deleted post", success: true }
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }
@@ -119,7 +119,7 @@ export class PostService {
         try {
             await this.prisma.post.deleteMany({})
             return "Deleted successfully"
-        } catch (error) {
+        } catch (error:any) {
             throw new InternalServerErrorException(error.message)
         }
     }

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { AwsService } from 'src/common/aws/aws.service';
-import { Req__with__user } from 'src/interfaces/getUser.interface';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { AwsService } from '../common/aws/aws.service';
+import { Req__with__user } from '../interfaces/getUser.interface';
+import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUser } from './dto/update.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class UserService {
             const users = await this.prisma.user.findMany()
 
             return { users }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -65,7 +65,7 @@ export class UserService {
             }
 
             return { user }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -86,7 +86,7 @@ export class UserService {
             }
 
             return { user }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -146,7 +146,7 @@ export class UserService {
             })
 
             return { success: true, user: update }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -163,7 +163,7 @@ export class UserService {
             }
 
             return { user, message: "User deleted", success: true }
-        } catch (error) {
+        } catch (error:any) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

@@ -1,5 +1,5 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { HttpCode, HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import {  HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import sharp from 'sharp';
 import { v4 as uuid } from 'uuid'
@@ -63,7 +63,7 @@ export class AwsService {
 
             const url = `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`
             return url
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to upload file to S3: ${error.message}`, error.stack);
             throw new HttpException('An error occurred while uploading the file.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -110,7 +110,7 @@ export class AwsService {
             const url = `https://${bucket}.s3.${region}.amazonaws.com/${fileName}`
 
             return url
-        } catch (error) {
+        } catch (error:any) {
             this.logger.error(`Failed to upload file to S3: ${error.message}`, error.stack);
             throw new HttpException('An error occurred while uploading the file.', HttpStatus.INTERNAL_SERVER_ERROR);
         }

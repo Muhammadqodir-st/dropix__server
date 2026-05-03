@@ -2,8 +2,8 @@ import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from '@nestjs
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import type { Req__with__user } from 'src/interfaces/getUser.interface';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import type { Req__with__user } from '../interfaces/getUser.interface';
+import { AuthGuard } from '../common/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {

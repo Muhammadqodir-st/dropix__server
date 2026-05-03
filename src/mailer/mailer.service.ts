@@ -9,18 +9,19 @@ export class MailerService {
 
     constructor() {
         this.transporter = nodemailer.createTransport({
-            service: 'gmail',
-            port: 587,
-            secure: false,
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            }
+                pass: process.env.EMAIL_PASS,
+            },
         });
     };
 
     async sendEmail(to: string, html: string, subject = 'Welcome to DROPIX') {
         try {
+            this.logger.log(`EMAIL_USER: ${process.env.EMAIL_USER}`);
             const info = await this.transporter.sendMail({
                 from: `"DROPIX" <${process.env.EMAIL_USER}>`,
                 to,
@@ -30,8 +31,8 @@ export class MailerService {
 
             this.logger.log(`Email sent :${info.messageId}`)
             return { success: true, messageId: info.messageId }
-        } catch (error) {
-            this.logger.log(`Email send failed:${error.message}`)
+        } catch (error: any) {
+            this.logger.error(`Email send failed:${error.message}`)
             return { success: false, error: error.message }
         }
     }

@@ -4,5 +4,5 @@ export class LoginDto {
     @IsNotEmpty()
     @IsString()
     @IsEmail()
-    email: string;
+    email!: string;
 }

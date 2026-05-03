@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards, } from '@nestjs/common';
 import { SaveService } from './save.service';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import type { Req__with__user } from 'src/interfaces/getUser.interface';
+import { AuthGuard } from '../common/guards/auth.guard';
+import type { Req__with__user } from '../interfaces/getUser.interface';
 import { SaveDto } from './dto/save.dto';
 
 @Controller('save')
