@@ -1,25 +1,38 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Resend } from 'resend';
+import * as nodemailer from 'nodemailer'
+import { Transporter } from 'nodemailer'
 
 @Injectable()
 export class MailerService {
-    private resend = new Resend(process.env.RESEND_API_KEY);
-    private logger = new Logger(MailerService.name);
+    private transporter: Transporter
+    private logger = new Logger(MailerService.name)
+
+    constructor() {
+        this.transporter = nodemailer.createTransport({
+            service: 'gmail',
+            port: 587,
+            secure: false,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+    };
 
     async sendEmail(to: string, html: string, subject = 'Welcome to DROPIX') {
         try {
-            const data = await this.resend.emails.send({
-                from: 'DROPIX <onboarding@resend.dev>', // Keyinchalik o'z domeningizni ulasangiz bo'ladi
-                to: [to],
-                subject: subject,
-                html: html,
+            const info = await this.transporter.sendMail({
+                from: `"DROPIX" <${process.env.EMAIL_USER}>`,
+                to,
+                subject,
+                html
             });
 
-            this.logger.log(`Email sent successfully: ${data.data?.id}`);
-            return { success: true };
+            this.logger.log(`Email sent :${info.messageId}`)
+            return { success: true, messageId: info.messageId }
         } catch (error:any) {
-            this.logger.error(`Resend failed: ${error.message}`);
-            return { success: false };
+            this.logger.log(`Email send failed:${error.message}`)
+            return { success: false, error: error.message }
         }
     }
 }
