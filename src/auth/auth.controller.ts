@@ -24,9 +24,11 @@ export class AuthController {
         const result = this.authService.verifyUser(token)
 
         res.cookie('auth', 'true', {
+            httpOnly: true,
             secure: true,
             sameSite: 'none',
             path: '/',
+            maxAge: 30 * 24 * 60 * 60 * 1000,
         })
 
 
@@ -41,9 +43,12 @@ export class AuthController {
 
     @Post('logout')
     logout(@Res({ passthrough: true }) res: any) {
-        res.clearCookie('auth', { path: '/' })
-
-        return { success: true }
+        res.clearCookie('auth', {
+            path: '/',
+            secure: true,
+            sameSite: 'none'
+        });
+        return { success: true };
     }
 
 }
